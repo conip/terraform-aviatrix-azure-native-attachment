@@ -1,6 +1,11 @@
 
 
 
+variable "spoke_account_name" {
+  description = "Azure Account defined under controller - being used to create AZ resources from controller itself"
+  type = string
+}
+
 variable "name" {
   description = "custom name for VNETs, gateways, and firewalls"
   type        = string
@@ -78,7 +83,7 @@ locals {
   cidr       = var.cidr
   name       = "${local.prefix}${local.lower_name}${local.suffix}"
   cidrbits   = tonumber(split("/", local.cidr)[1])
-  newbits    = 26 - local.cidrbits
+  newbits    = var.subnet_size - local.cidrbits
   netnum     = pow(2, local.newbits)
   # subnet     = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 2) : aviatrix_vpc.default[0].public_subnets[0].cidr)
   # ha_subnet  = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 1) : aviatrix_vpc.default[0].public_subnets[0].cidr)
