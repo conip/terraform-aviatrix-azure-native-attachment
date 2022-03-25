@@ -27,6 +27,9 @@ resource "azurerm_virtual_network" "vnet_spoke_default" {
     name           = "subnet-${local.name}"
     address_prefix = cidrsubnet(var.cidr, 0, 0)
   }
+  depends_on = [
+    azurerm_resource_group.spoke_rg
+  ]
 }
 
 
