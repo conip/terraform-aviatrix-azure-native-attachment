@@ -82,9 +82,9 @@ locals {
   #cidr       = var.use_existing_vnet ? "10.0.0.0/20" : var.cidr #Set dummy if existing VNET is used.
   cidr       = var.cidr
   name       = "${local.prefix}${local.lower_name}${local.suffix}"
-  cidrbits   = tonumber(split("/", local.cidr)[1])
-  newbits    = var.subnet_size - local.cidrbits
-  netnum     = pow(2, local.newbits)
+  # cidrbits   = tonumber(split("/", local.cidr)[1])
+  # newbits    = var.subnet_size - local.cidrbits
+  # netnum     = pow(2, local.newbits)
   # subnet     = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 2) : aviatrix_vpc.default[0].public_subnets[0].cidr)
   # ha_subnet  = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 1) : aviatrix_vpc.default[0].public_subnets[0].cidr)
  cloud_type = var.china ? 2048 : 8
