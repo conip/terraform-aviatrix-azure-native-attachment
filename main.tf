@@ -23,6 +23,10 @@ resource "azurerm_virtual_network" "vnet_spoke_default" {
   location            = azurerm_resource_group.spoke-rg.location
   resource_group_name = azurerm_resource_group.spoke-rg.name
   address_space       = [var.vnet_cidr]
+    subnet {
+    name           = "subnet-user-1"
+    address_prefix = cidrsubnet(var.vnet_cidr, 8, 1)
+  }
 }
 
 
