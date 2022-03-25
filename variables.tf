@@ -1,6 +1,3 @@
-
-
-
 variable "spoke_account_name" {
   description = "Azure Account defined under controller - being used to create AZ resources from controller itself"
   type = string
@@ -22,30 +19,6 @@ variable "region" {
   type        = string
 }
 
-# variable "arm_subscription_id" {
-#   description = "Azure ARM Subscription ID. Required when creating an account for Azure"
-#   type        = string
-# }
-
-# variable "arm_directory_id" {
-#   description = "Azure ARM Directory ID. Required when creating an account for Azure"
-#   type        = string
-# }
-# variable "arm_application_id" {
-#   description = "Azure ARM Application ID. Required when creating an account for Azure"
-#   type        = string
-# }
-# variable "arm_application_key" {
-#   description = "Azure ARM Application key. Required when creating an account for Azure"
-#   type        = string
-# }
-
-variable "attached" {
-  description = "Set to false if you don't want to attach spoke to transit."
-  type        = bool
-  default     = true
-}
-
 variable "security_domain" {
   description = "Provide security domain name to which spoke needs to be deployed. Transit gateway mus tbe attached and have segmentation enabled."
   type        = string
@@ -55,12 +28,12 @@ variable "security_domain" {
 variable "transit_gw" {
   description = "Transit gateway to attach spoke in the same region"
   type        = map(string)
-  # default = {
-  #   "Central US"           = "avx-central-us-transit",
-  #   "Germany West Central" = "avx-germany-transit",
-  #   "South East Asia"      = "avx-south-east-asia-transit",
-  #   "West Europe"          = "avx-west-europe-transit"
-  # }
+  default = {
+    "Central US"           = "avx-central-us-transit",
+    "Germany West Central" = "avx-germany-transit",
+    "South East Asia"      = "avx-south-east-asia-transit",
+    "West Europe"          = "avx-west-europe-transit"
+  }
 }
 
 variable "inspection" {
@@ -82,12 +55,7 @@ locals {
   #cidr       = var.use_existing_vnet ? "10.0.0.0/20" : var.cidr #Set dummy if existing VNET is used.
   cidr       = var.cidr
   name       = "${local.prefix}${local.lower_name}${local.suffix}"
-  # cidrbits   = tonumber(split("/", local.cidr)[1])
-  # newbits    = var.subnet_size - local.cidrbits
-  # netnum     = pow(2, local.newbits)
-  # subnet     = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 2) : aviatrix_vpc.default[0].public_subnets[0].cidr)
-  # ha_subnet  = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 1) : aviatrix_vpc.default[0].public_subnets[0].cidr)
- cloud_type = var.china ? 2048 : 8
+  cloud_type = var.china ? 2048 : 8
 }
 
 
@@ -101,34 +69,6 @@ variable "prefix" {
 
 variable "suffix" {
   description = "Boolean to determine if name will be appended with -spoke"
-  type        = bool
-  default     = true
-}
-
-
-variable "transit_gw_egress" {
-  description = "Name of the transit gateway to attach this spoke to"
-  type        = string
-  default     = ""
-}
-
-variable "transit_gw_route_tables" {
-  description = "Route tables to propagate routes to for transit_gw attachment"
-  type        = list(string)
-  default     = []
-}
-
-variable "transit_gw_egress_route_tables" {
-  description = "Route tables to propagate routes to for transit_gw2 attachment"
-  type        = list(string)
-  default     = []
-}
-
-
-
-
-variable "attached_gw_egress" {
-  description = "Set to false if you don't want to attach spoke to transit_gw_egress."
   type        = bool
   default     = true
 }
@@ -150,7 +90,6 @@ variable "vnet_id" {
   type        = string
   default     = ""
 }
-
 
 variable "china" {
   description = "Set to true if deploying this module in Azure China."

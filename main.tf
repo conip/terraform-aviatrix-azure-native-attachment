@@ -1,17 +1,3 @@
-
-
-
-
-# # Create an Azure Access Account
-# resource "aviatrix_account" "default" {
-#   account_name        = local.name
-#   cloud_type          = 8
-#   arm_subscription_id = var.arm_subscription_id
-#   arm_directory_id    = var.arm_directory_id
-#   arm_application_id  = var.arm_application_id
-#   arm_application_key = var.arm_application_key
-# }
-
 resource "azurerm_resource_group" "spoke_rg" {
   name     = "rg-${local.name}"
   location = var.region
@@ -56,12 +42,12 @@ resource "aviatrix_segmentation_security_domain_association" "default" {
   ] #Let's make sure this cannot create a race condition
 }
 
-# resource "aviatrix_transit_firenet_policy" "default" {
-#   count                        = var.inspection ? 1 : 0
-#   transit_firenet_gateway_name = var.transit_gw["${var.region}"]
-#   inspected_resource_name      = ""
-#   depends_on = [
-#     aviatrix_azure_spoke_native_peering.native_vnet_attachment
-#   ] #Let's make sure this cannot create a race condition
-# }
+resource "aviatrix_transit_firenet_policy" "default" {
+  count                        = var.inspection ? 1 : 0
+  transit_firenet_gateway_name = var.transit_gw["${var.region}"]
+  inspected_resource_name      = ""
+  depends_on = [
+    aviatrix_azure_spoke_native_peering.native_vnet_attachment
+  ] #Let's make sure this cannot create a race condition
+}
 
