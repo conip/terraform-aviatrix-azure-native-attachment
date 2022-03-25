@@ -6,11 +6,6 @@ variable "name" {
   type        = string
 }
 
-variable "spoke_region" {
-  description = "Region in which Native SPOKE (vnet) should be created"
-  type        = string
-}
-
 variable "cidr" {
   description = "The CIDR range to be used for the VNET"
   type        = string
@@ -22,23 +17,23 @@ variable "region" {
   type        = string
 }
 
-variable "arm_subscription_id" {
-  description = "Azure ARM Subscription ID. Required when creating an account for Azure"
-  type        = string
-}
+# variable "arm_subscription_id" {
+#   description = "Azure ARM Subscription ID. Required when creating an account for Azure"
+#   type        = string
+# }
 
-variable "arm_directory_id" {
-  description = "Azure ARM Directory ID. Required when creating an account for Azure"
-  type        = string
-}
-variable "arm_application_id" {
-  description = "Azure ARM Application ID. Required when creating an account for Azure"
-  type        = string
-}
-variable "arm_application_key" {
-  description = "Azure ARM Application key. Required when creating an account for Azure"
-  type        = string
-}
+# variable "arm_directory_id" {
+#   description = "Azure ARM Directory ID. Required when creating an account for Azure"
+#   type        = string
+# }
+# variable "arm_application_id" {
+#   description = "Azure ARM Application ID. Required when creating an account for Azure"
+#   type        = string
+# }
+# variable "arm_application_key" {
+#   description = "Azure ARM Application key. Required when creating an account for Azure"
+#   type        = string
+# }
 
 variable "attached" {
   description = "Set to false if you don't want to attach spoke to transit."
