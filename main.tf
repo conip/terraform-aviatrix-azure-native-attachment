@@ -50,7 +50,7 @@ resource "aviatrix_segmentation_security_domain_association" "default" {
   count                = length(var.security_domain) > 0 ? 1 : 0 #Only create resource when attached and security_domain is set.
   transit_gateway_name = var.transit_gw["${var.region}"]
   security_domain_name = var.security_domain
-  attachment_name      = "${var.spoke_account_name}:${aviatrix_azure_spoke_native_peering.native_vnet_attachment}"
+  attachment_name      = "${var.spoke_account_name}:${aviatrix_azure_spoke_native_peering.native_vnet_attachment.spoke_vpc_id}"
   depends_on = [
     aviatrix_azure_spoke_native_peering.native_vnet_attachment
   ] #Let's make sure this cannot create a race condition
