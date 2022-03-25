@@ -46,18 +46,18 @@ resource "aviatrix_azure_spoke_native_peering" "native_vnet_attachment" {
 }
 
 
-# resource "aviatrix_segmentation_security_domain_association" "default" {
-#   count                = length(var.security_domain) > 0 ? 1 : 0 #Only create resource when attached and security_domain is set.
-#   transit_gateway_name = var.transit_gw["${var.region}"]
-#   security_domain_name = var.security_domain
-#   attachment_name      = ""AZURE-pkonitz:  az-hnk-test-spoke  :az-hnk-test-spoke:  10f894f7-9fe4-41af-a394-8494f39c82e9
-#   depends_on = [
-#     aviatrix_azure_spoke_native_peering.native_vnet_attachment
-#   ] #Let's make sure this cannot create a race condition
-# }
+resource "aviatrix_segmentation_security_domain_association" "default" {
+  count                = length(var.security_domain) > 0 ? 1 : 0 #Only create resource when attached and security_domain is set.
+  transit_gateway_name = var.transit_gw["${var.region}"]
+  security_domain_name = var.security_domain
+  attachment_name      = "${var.spoke_account_name}:${aviatrix_azure_spoke_native_peering.native_vnet_attachment}"
+  depends_on = [
+    aviatrix_azure_spoke_native_peering.native_vnet_attachment
+  ] #Let's make sure this cannot create a race condition
+}
 
 # resource "aviatrix_transit_firenet_policy" "default" {
-#   count                        = var.inspection ? (var.attached ? 1 : 0) : 0
+#   count                        = var.inspection ? 1 : 0
 #   transit_firenet_gateway_name = var.transit_gw["${var.region}"]
 #   inspected_resource_name      = ""
 #   depends_on = [
