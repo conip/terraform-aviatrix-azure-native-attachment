@@ -20,12 +20,12 @@ resource "azurerm_resource_group" "spoke_rg" {
 
 resource "azurerm_virtual_network" "vnet_spoke_default" {
   name                = local.name
-  location            = azurerm_resource_group.spoke-rg.location
-  resource_group_name = azurerm_resource_group.spoke-rg.name
-  address_space       = [var.vnet_cidr]
+  location            = azurerm_resource_group.spoke_rg.location
+  resource_group_name = azurerm_resource_group.spoke_rg.name
+  address_space       = [var.cidr]
     subnet {
     name           = "subnet-user-1"
-    address_prefix = cidrsubnet(var.vnet_cidr, 8, 1)
+    address_prefix = cidrsubnet(var.cidr, 8, 1)
   }
 }
 
@@ -36,7 +36,7 @@ resource "aviatrix_azure_spoke_native_peering" "native_vnet_attachment" {
   #spoke_account_name   = aviatrix_account.default.account_name
   spoke_account_name = "AZURE-pkonitz" # to be removed and replaced by above line
   spoke_region       = var.region
-  spoke_vpc_id       = "${azurerm_virtual_network.vnet_spoke_default.name}:${azurerm_resource_group.spoke_rg}:${azurerm_virtual_network.vnet_spoke_default.guid}"
+  spoke_vpc_id       = "${azurerm_virtual_network.vnet_spoke_default.name}:${azurerm_resource_group.spoke_rg.name}:${azurerm_virtual_network.vnet_spoke_default.guid}"
   depends_on = [
     azurerm_virtual_network.vnet_spoke_default
   ]

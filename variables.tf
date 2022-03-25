@@ -2,7 +2,7 @@
 
 
 variable "name" {
-  description = "Custom name for VNETs, gateways, and firewalls"
+  description = "custom name for VNETs, gateways, and firewalls"
   type        = string
 }
 
@@ -50,12 +50,12 @@ variable "security_domain" {
 variable "transit_gw" {
   description = "Transit gateway to attach spoke in the same region"
   type        = map(string)
-  default = {
-    "Central US"           = "avx-central-us-transit",
-    "Germany West Central" = "avx-germany-transit",
-    "South East Asia"      = "avx-south-east-asia-transit",
-    "West Europe"          = "avx-west-europe-transit"
-  }
+  # default = {
+  #   "Central US"           = "avx-central-us-transit",
+  #   "Germany West Central" = "avx-germany-transit",
+  #   "South East Asia"      = "avx-south-east-asia-transit",
+  #   "West Europe"          = "avx-west-europe-transit"
+  # }
 }
 
 variable "inspection" {
@@ -74,14 +74,15 @@ locals {
   lower_name = replace(lower(var.name), " ", "-")
   prefix     = var.prefix ? "az-" : ""
   suffix     = var.suffix ? "-spoke" : ""
-  cidr       = var.use_existing_vnet ? "10.0.0.0/20" : var.cidr #Set dummy if existing VNET is used.
+  #cidr       = var.use_existing_vnet ? "10.0.0.0/20" : var.cidr #Set dummy if existing VNET is used.
+  cidr       = var.cidr
   name       = "${local.prefix}${local.lower_name}${local.suffix}"
   cidrbits   = tonumber(split("/", local.cidr)[1])
   newbits    = 26 - local.cidrbits
   netnum     = pow(2, local.newbits)
-  subnet     = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 2) : aviatrix_vpc.default[0].public_subnets[0].cidr)
-  ha_subnet  = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 1) : aviatrix_vpc.default[0].public_subnets[0].cidr)
-  cloud_type = var.china ? 2048 : 8
+  # subnet     = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 2) : aviatrix_vpc.default[0].public_subnets[0].cidr)
+  # ha_subnet  = var.use_existing_vnet ? var.gw_subnet : (var.insane_mode ? cidrsubnet(local.cidr, local.newbits, local.netnum - 1) : aviatrix_vpc.default[0].public_subnets[0].cidr)
+ cloud_type = var.china ? 2048 : 8
 }
 
 
